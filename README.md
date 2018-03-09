@@ -11,6 +11,7 @@ Creates a base Django Project
  pip install -r requirements (installs Django 1.11)
 
  git config user.name "jmushtaq"
+ git config user.email "jawaid_mushtaq@yahoo.com"
 
  ./manage runserver 0.0.0.0:8000
  
