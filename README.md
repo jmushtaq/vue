@@ -12,6 +12,7 @@ Creates a base Django Project
 
  git config user.name "jmushtaq"
  git config user.email "jawaid_mushtaq@yahoo.com"
+ git config remote.origin.url https://jmushtaq@github.com/jmushtaq/vue.git
 
  ./manage runserver 0.0.0.0:8000
  
