@@ -1,18 +1,29 @@
-<!DOCTYPE html>
+{% extends 'vue_tutorial/base_vue_tut.html' %}
 
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Vue Tutorial</title>
-  <LINK href="styles.css" rel="stylesheet" type="text/css">
-</head>
+{% block content %}
 
-<body>
+<p>Welcome to Vue Tutorial App</p>
 
-<!-- Feel free to change this text here -->
-<p>
-  Vue Tutorial App
-</p>
+<ul>
+    {% for day in days %}
+        <li><h4> Day {{ day }}</h4></li>
+    {% endfor %}
+</ul>
 
-</body>
-</html>
+<div id="app">
+    <p> [[ message ]] </p>
+</div>
+
+<script>
+var app = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    data: {
+        message: 'Hello Vue!'
+    }
+
+})
+</script>
+
+
+{% endblock %}
