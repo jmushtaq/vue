@@ -1,0 +1,59 @@
+{% extends 'article/base_article.html' %}
+
+{% block content %}
+
+<p>Welcome to Vue Article Tutorial App</p>
+<p>https://medium.com/quick-code/crud-app-using-vue-js-and-django-516edf4e4217</p>
+
+<ul>
+    {% for day in days %}
+        <li><h4> Day (Django) {{ day }}</h4></li>
+    {% endfor %}
+</ul>
+
+
+
+<div id="app">
+    <p> [[ message ]] </p>
+
+    <ul>
+        <li v-for="day in {{ days }}">
+            <h4> Day (Vue) [[ day ]]</h4>
+        </li>
+    </ul>
+</div>
+
+<script>
+var app = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    data: {
+        message: 'Hello Vue!',
+    }
+
+})
+
+var starting = new Vue({
+    el: ‘#starting’,
+    delimiters: [‘${‘,’}’],
+    data: {
+        articles: [],
+        loading: false,
+        currentArticle: {},
+        message: null,
+        newArticle: { ‘article_heading’: null, ‘article_body’: null  },
+    },
+
+    mounted: function() {
+
+    },
+
+    methods: {
+
+    }
+});
+
+</script>
+
+
+{% endblock %}
