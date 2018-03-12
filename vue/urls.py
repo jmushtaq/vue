@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^vue_tutorial/', include('vue_tutorial.urls')),
     url(r'^baseapp/', include('baseapp.urls')),
 
     url(r'^admin/', admin.site.urls),
