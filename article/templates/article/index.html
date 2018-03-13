@@ -5,51 +5,265 @@
 <p>Welcome to Vue Article Tutorial App</p>
 <p>https://medium.com/quick-code/crud-app-using-vue-js-and-django-516edf4e4217</p>
 
-<ul>
-    {% for day in days %}
-        <li><h4> Day (Django) {{ day }}</h4></li>
-    {% endfor %}
-</ul>
+    <div id="starting">
+      <div class="container">
+        <div class="row">
+          <h1>List of Articles
+          <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#addArticleModal">ADD ARTICLE</button>
+          </h1>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Heading</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="article in articles">
+                <th scope="row">${article.article_id}</th>
+                <td>${article.article_heading}</td>
+                <td>
+                  <button class="btn btn-info" v-on:click="getArticle(article.article_id)">Edit</button>
+                  <button class="btn btn-danger" v-on:click="deleteArticle(article.article_id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+         </table>
+ 
+          <!-- Add Article Modal -->
+          <div class="modal fade" id="addArticleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">ADD ARTICLE</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form v-on:submit.prevent="addArticle()">
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label for="article_heading">Article Heading</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="article_heading"
+                        placeholder="Enter Article Heading"
+                        v-model="newArticle.article_heading"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="article_body">Article Body</label>
+                      <textarea
+                        class="form-control"
+                        id="article_body"
+                        placeholder="Enter Article Body"
+                        v-model="newArticle.article_body"
+                        required="required"
+                        rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+              </div>
+            </div>
+           <div class="loading" v-if="loading===true">Loading&#8230;</div>          
+          </div>
+          <!-- End of article modal -->
+
+	  <!-- Edit Article Modal -->
+          <div class="modal fade" id="editArticleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">EDIT ARTICLE</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form v-on:submit.prevent="updateArticle()">
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label for="article_heading">Article Heading</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="article_heading"
+                        placeholder="Enter Article Heading"
+                        v-model="currentArticle.article_heading"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="article_body">Article Body</label>
+                      <textarea
+                        class="form-control"
+                        id="article_body"
+                        placeholder="Enter Article Body"
+                        v-model="currentArticle.article_body"
+                        required="required"
+                        rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+              </div>
+            </div>
+            <div class="loading" v-if="loading===true">Loading&#8230;</div>
+          </div>
+          <!-- End of edit article modal -->
+
+	  <!-- Delete Article Modal -->
+          <div class="modal fade" id="deleteArticleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">DELETE ARTICLE</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form v-on:submit.prevent="deleteArticle()">
+		<!--
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label for="article_heading">Article Heading</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="article_heading"
+                        placeholder="Enter Article Heading"
+                        v-model="currentArticle.article_heading"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="article_body">Article Body</label>
+                      <textarea
+                        class="form-control"
+                        id="article_body"
+                        placeholder="Enter Article Body"
+                        v-model="currentArticle.article_body"
+                        required="required"
+                        rows="3"></textarea>
+                    </div>
+                </div>
+		-->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Confirm Delete</button>
+                </div>
+                </form>
+              </div>
+            </div>
+            <div class="loading" v-if="loading===true">Loading&#8230;</div>
+          </div>
+          <!-- End of delete article modal -->
 
 
-
-<div id="app">
-    <p> [[ message ]] </p>
-
-    <ul>
-        <li v-for="day in {{ days }}">
-            <h4> Day (Vue) [[ day ]]</h4>
-        </li>
-    </ul>
-</div>
+        </div>
+      </div>
+      <div class="loading" v-if="loading===true">Loading&#8230;</div>
+    </div>
 
 <script>
-var app = new Vue({
-    delimiters: ['[[', ']]'],
-    el: '#app',
-    data: {
-        message: 'Hello Vue!',
-    }
-
-})
 
 var starting = new Vue({
-    el: ‘#starting’,
-    delimiters: [‘${‘,’}’],
+    el: '#starting',
+    delimiters: ['${','}'],
     data: {
         articles: [],
         loading: false,
         currentArticle: {},
         message: null,
-        newArticle: { ‘article_heading’: null, ‘article_body’: null  },
+        newArticle: { 'article_heading': null, 'article_body': null  },
     },
 
     mounted: function() {
-
+        this.getArticles();
     },
 
     methods: {
+	getArticles: function() {
+	this.loading = true;
+	this.$http.get('/api/article/')
+	    .then((response) => {
+		//this.articles = response.data.results;
+		this.articles = response.data;
+		console.log(response.data);
+		this.loading = false;
+	    })
+	    .catch((err) => {
+	    this.loading = false;
+	    console.log(err);
+	    })
+	},
+	getArticle: function(id) {
+	this.loading = true;
+	//this.$http.get('/api/article/' + id + '/')
+	this.$http.get(`/api/article/${id}/`)
+	    .then((response) => {
+		this.currentArticle = response.data;
+		$("#editArticleModal").modal('show');
+		this.loading = false;
+	    })
+	    .catch((err) => {
+		this.loading = false;
+		console.log(id);
+		console.log(err);
+	    })
+	},
+	addArticle: function() {
+	this.loading = true;
+	this.$http.post('/api/article/', this.newArticle)
+	    .then((response) => {
+		this.loading = false;
+		this.getArticles();
+	    })
+	    .catch((err) => {
+		this.loading = false;
+		console.log(err);
+	    })
+	},
+	updateArticle: function() {
+	this.loading = true;
+	this.$http.put(`/api/article/${this.currentArticle.article_id}/`, this.currentArticle)
+	    .then((response) => {
+		this.loading = false;
+		this.currentArticle = response.data;
+		this.getArticles();
+	    })
+	    .catch((err) => {
+		this.loading = false;
+		console.log(err);
+	    })
+	},
+	deleteArticle: function(id) {
+	this.loading = true;
+	$("#deleteArticleModal").modal('show');
+	this.$http.delete(`/api/article/${id}/` )
+	    .then((response) => {
+		this.loading = false;
+		this.getArticles();
+	    })
+	    .catch((err) => {
+		this.loading = false;
+		console.log(err);
+	    })
+	    $("#deleteArticleModal").modal('hide');
+	},
 
+	onConfirm() {
+	    this.$emit("confirm");
+	},
+	onCancel() {
+    	    this.$emit("cancel");
+	}
     }
 });
 

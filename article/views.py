@@ -24,5 +24,6 @@ class IndexView(generic.ListView):
         return context
 
     def get_queryset(self):
+        #return Article.objects.all()
         return None
 
