@@ -1,0 +1,36 @@
+{% extends 'essentials/base.html' %}
+
+{% block content %}
+
+<p>Welcome to Vue Essentials Tutorial App</p>
+
+<ul>
+    {% for day in days %}
+        <li><h4> Day (Django) {{ day }}</h4></li>
+    {% endfor %}
+</ul>
+
+
+
+<div id="app">
+    <p> [[ message ]] </p>
+
+    <ul>
+        <li v-for="day in {{ days }}">
+            <h4> Day (Vue) [[ day ]]</h4>
+        </li>
+    </ul>
+</div>
+
+<script>
+var app = new Vue({
+    delimiters: ['[[', ']]'],
+    el: '#app',
+    data: {
+        message: 'Hello Vue!',
+    }
+})
+</script>
+
+
+{% endblock %}
